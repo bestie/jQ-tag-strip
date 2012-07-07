@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Jasmine Test Suite</title>
+  <link rel="stylesheet" href="jasmine-1.2.0/jasmine.css" type="text/css" media="screen">
+  <script type="text/javascript" src="jasmine-1.2.0/jasmine.js"></script>
+  <script type="text/javascript" src="jasmine-1.2.0/jasmine-html.js"></script>
+  <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
+  <script type="text/javascript" src="minispade.js"></script>
+  <script type="text/javascript" src="source/jq_tag_strip.js"></script>
+  <!-- include spec files here... -->
+  <script type="text/javascript" src="source/jq_tag_strip_spec.js"></script>
+  <script type="text/javascript">
+    (function() {
+      minispade.require('jq_tag_strip/jq_tag_strip');
+      minispade.require('jq_tag_strip/~spec/jq_tag_strip_spec');
+
+      var jasmineEnv = jasmine.getEnv();
+      jasmineEnv.updateInterval = 1000;
+
+       var htmlReporter = new jasmine.HtmlReporter();
+      jasmineEnv.addReporter(htmlReporter);
+
+      jasmineEnv.specFilter = function(spec) {
+        return htmlReporter.specFilter(spec);
+      };
+
+      var currentWindowOnload = window.onload;
+      window.onload = function() {
+        if (currentWindowOnload) {
+          currentWindowOnload();
+        }
+
+        // document.querySelector('.version').innerHTML = jasmineEnv.versionString();
+        execJasmine();
+      };
+
+      function execJasmine() {
+        jasmineEnv.execute();
+      }
+
+    })();
+  </script>
+<body>
+</body>
+</html>
