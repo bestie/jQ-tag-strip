@@ -26,7 +26,7 @@ describe "jQuery#strip_tags", ->
 
     it "strips deeply nested tags", ->
       expect( $(
-        "<p>a paragraph <b>bold text <em>emphasized text<em></b></p>"
+        "<p>a paragraph <b>bold text <em>emphasized text</em></b></p>"
         ).stripTags( whitelist: ['b'] ).html()
       ).toEqual("a paragraph <b>bold text emphasized text</b>")
 
@@ -35,12 +35,27 @@ describe "jQuery#strip_tags", ->
         .stripTags( whitelist: ['span.foo'] ).html()
       ).toEqual( '<span class="foo">foo</span>bar')
 
+    describe "with a child selector", ->
+      it "filters only the selected child nodes", ->
+        expect(
+          $("<p><span>outer <span>inner</span></span></p>")
+            .stripTags(whitelist: ['span > span']).html()
+        ).toEqual( "outer <span>inner</span>")
+
+
   describe "with a blacklist", ->
     it "removes tags from the black list, leaving other tags behind", ->
       expect( $(
         "<p>a paragraph <b>bold text <em>emphasized text</em></b></p>"
         ).stripTags( blacklist: ['em'] ).html()
       ).toEqual("<p>a paragraph <b>bold text emphasized text</b></p>")
+
+    describe "with a child selector", ->
+      it "filters only the selected child nodes", ->
+        expect(
+          $("<p><span>outer <span>inner</span></span></p>")
+            .stripTags(blacklist: ['span > span']).html()
+        ).toEqual( "<p><span>outer inner</span></p>")
 
   describe "with mode: remove option", ->
     it "removes nodes rather than unwrapping them", ->
