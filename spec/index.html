@@ -14,9 +14,6 @@
   <script type="text/javascript" src="source/jq_tag_strip_spec.js"></script>
   <script type="text/javascript">
     (function() {
-      minispade.require('jq_tag_strip/jq_tag_strip');
-      minispade.require('jq_tag_strip/~spec/jq_tag_strip_spec');
-
       var jasmineEnv = jasmine.getEnv();
       jasmineEnv.updateInterval = 1000;
 
@@ -33,7 +30,6 @@
           currentWindowOnload();
         }
 
-        // document.querySelector('.version').innerHTML = jasmineEnv.versionString();
         execJasmine();
       };
 

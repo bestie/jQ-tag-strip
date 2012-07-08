@@ -6,14 +6,6 @@ input "packages" do
   match "*/{lib,spec}/**/*.coffee" do
     filter Rake::Pipeline::Web::Filters::CoffeeScriptFilter
 
-    minispade :rewrite_requires => true, :module_id_generator => proc { |input|
-      id = input.path.dup
-      id.sub!('/lib/', '/')
-      id.sub!(/\.js$/, '')
-      id.sub!(/\/main$/, '')
-      id.sub!('/spec', '/~spec')
-      id
-    }
     concat do |filename|
       filename =~ %r{/spec/} ? "jq_tag_strip_spec.js" : "jq_tag_strip.js"
     end
