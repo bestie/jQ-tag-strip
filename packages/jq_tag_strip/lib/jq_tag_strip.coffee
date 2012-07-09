@@ -54,9 +54,9 @@
     modeMustBeValid()
     invalidOptionsNotAllowed(options)
 
-  $.fn.stripTags = (options) ->
+  $.stripTags = (string, options) ->
     normalizeAndCheckOptions(options)
-    subject = $('<div />').append(this.get())
+    subject = $('<div />').append(string)
 
     if whitelist.length > 0
       currentScope = nodesNotWhitelisted()
@@ -72,5 +72,11 @@
     while (nodes = getMarkedNodes()).length > 0
       filterNode( nodes.first() )
 
-    return subject
+    return subject.html()
+
+  $.fn.stripTags = (options={}) ->
+    this.each ->
+      $this = $(this)
+      $this.html( $.stripTags($this.html(), options) )
+
 )(jQuery)
