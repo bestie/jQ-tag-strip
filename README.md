@@ -1,7 +1,7 @@
 # jQuery tag strip plugin
 
 ## The one-liner
-  It strips tags from content you pass to it.
+  It strips tags from matched DOM elements or arbitrary content.
 
 ## Stripping options include
 * Whitelist
@@ -11,42 +11,59 @@
 
 ## Examples
 
+### jQuery selection API
+Select all p tags and remove and all within except for bold tags.
+```html
+<p>ZOMG <i>foo</i> is <b>LOL</b>
+```
+After this
+```javascript
+  $('p').stripTags({ whitelist: ['b'] })
+```
+becomes
+```html
+<p>ZOMG foo is <b>LOL</b></p>
+```
+Tags are removed from the contents of the targeted tags, in this case 'p'.
+
+Further options are documented below.
+
+### Arbitrary content API
+Accepts a HTML node object or string.
+
 ### Strip all tags, leaving content
 ```javascript
-  $('<p>Some <em>html</em></p>').stripTags().html() == 'Some html'
+  $.stripTags('<p>Some <em>html</em></p>') == 'Some html'
 ```
 
 ### Whitelist
 ```javascript
-  $('<p>Some <em>content</em></p>')
-    .stripTags({ whitelist: ['p'] })
-    .html() == '<p>Some html</p>'
+  $.stripTags('<p>Some <em>content</em></p>', { whitelist: ['p'] })
+    == '<p>Some html</p>'
 ```
 
 ### Blacklist
 ```javascript
-  $('<p>Some <em>html</em></p>')
-    .stripTags({ blacklist: ['p'] })
-    .html() == 'Some <em>html</em>'
+  $.stripTags('<p>Some <em>html</em></p>', { blacklist: ['p'] }
+    == 'Some <em>html</em>'
 ```
 
 ### Remove nodes
 ```javascript
-  $('<p>Some <em>html</em></p>')
-    .stripTags({ blacklist: ['em'], mode: 'remove' })
-    .html() == '<p>Some </p>'
+  $.stripTags('<p>Some <em>html</em></p>', { blacklist: ['em'], mode: 'remove' })
+    == '<p>Some </p>'
 ```
 
 ### Child selector
 ```javascript
-  $('<p>Some <span class="outer">nested <span class="inner">spans</span></span></p>')
-    .stripTags({ blacklist: ['span span'] })
-    .html() == '<p>Some <span class="outer">nested spans</span></p>'
+  $.stripTags('<p>Some <span class="outer">nested <span class="inner">spans</span></span></p>',
+    { blacklist: ['span span'] })
+    == '<p>Some <span class="outer">nested spans</span></p>'
 ```
 
 ### Class selector
 ```javascript
-  $('<p>Some <span class="outer">nested <span class="inner">spans</span></span></p>')
-    .stripTags({ blacklist: ['.outer'] })
-    .html() == '<p>Some nested <span class="inner">spans</span></p>'
+  $.stripTags('<p>Some <span class="outer">nested <span class="inner">spans</span></span></p>',
+    { blacklist: ['.outer'] })
+    == '<p>Some nested <span class="inner">spans</span></p>'
 ```
